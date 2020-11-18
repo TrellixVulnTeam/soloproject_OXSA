@@ -9,13 +9,13 @@ const sessionController = {};
 sessionController.isLoggedIn = (req, res, next) => {
   // write code here
   const id = res.locals.userID || req.cookies.centssid;
-  console.log('looking for session with id', id);
+  // console.log('looking for session with id', id);
   Session.findOne({ cookieId: id }, (err, activeSession) => {
     if (err) {
       err.message = { Error: 'Error within sessionController.isLoggedIn' };
       next(err);
     }
-    console.log('activeSession is ', activeSession);
+    // console.log('activeSession is ', activeSession);
 
     if (activeSession !== null) return next();
 
@@ -33,7 +33,7 @@ sessionController.startSession = (req, res, next) => {
     if (err) {
       err.message = { Error: 'Error in sessionController.startSession' };
     }
-    console.log('active session found in start session');
+    // console.log('active session found in start session');
     if (activeSession) next();
     else {
       Session.create({ cookieId: ID }, (err, newSession) => {

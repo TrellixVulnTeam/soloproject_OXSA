@@ -1,18 +1,14 @@
 const express = require('express');
+const router = express.Router();
 
 const userController = require('../controllers/userController');
 
-const router = express.Router();
-
 // if they send a get request to api, look in response body for id
-router.get('/followed', (req, res) => {
-  const id = req.cookies.centssid;
-  return res
-    .status(200)
-    .sendFile(path.resolve(__dirname, '../../dist/login.html'));
+router.get('/followed', userController.getFollowed, (req, res) => {
+  return res.status(200).send(JSON.stringify(res.locals.followed));
 });
 
-router.post('/', userController.verifyUser, (req, res) => {
+router.post('/followed', userController.updateFollowed, (req, res) => {
   return res.status(200).redirect('/feed');
 });
 

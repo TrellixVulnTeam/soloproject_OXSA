@@ -70,4 +70,28 @@ userController.verifyUser = (req, res, next) => {
   });
 };
 
+userController.getFollowed = (req, res, next) => {
+  User.findById(req.cookies.centssid, (err, user) => {
+    if (err)
+      return next(
+        'Error in userController.getAllUsers: ' + JSON.stringify(err)
+      );
+
+    res.locals.followed = user.followed;
+    return next();
+  });
+};
+
+userController.updateFollowed = (req, res, next) => {
+  User.find({}, (err, users) => {
+    if (err)
+      return next(
+        'Error in userController.getAllUsers: ' + JSON.stringify(err)
+      );
+
+    res.locals.users = users;
+    return next();
+  });
+};
+
 module.exports = userController;

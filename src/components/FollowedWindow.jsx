@@ -1,8 +1,11 @@
 import React from 'react';
-import FollowDisplay from './FollowDisplay';
+import FollowDisplay from './FollowDisplay.jsx';
 
 function FollowedWindow(props) {
   let followed = props.followed;
+  // for (let key of Object.keys(props.followed)) {
+  //   followed.push(props.followed[key]);
+  // }
 
   followed = followed.map((follower, i) => {
     return (
@@ -12,11 +15,11 @@ function FollowedWindow(props) {
         indivs={follower.indivs}
         pacs={follower.pacs}
         lobbying={follower.lobbying}
-        key={i}
+        key={`followDisplay${i}`}
       />
     );
   });
-
+  console.log(followed);
   return <div className="window">{followed}</div>;
 }
 

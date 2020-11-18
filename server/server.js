@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // define route handlers
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 
 // serving bundle.js
 app.get('/bundle.js', express.static(path.resolve(__dirname, '../dist/')));

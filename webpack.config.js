@@ -9,14 +9,14 @@ const config = {
     filename: 'bundle.js',
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
-    compress: true,
-    port: 8080,
+    // contentBase: path.resolve(__dirname, 'dist'),
+    // compress: true,
+    // port: 8080,
     proxy: {
-      '/api': 'http://localhost:3000',
-      secure: false,
+      '*': 'http://localhost:3000',
+      // secure: false,
     },
-    publicPath: '/feed',
+    publicPath: '/dist',
   },
   module: {
     rules: [
