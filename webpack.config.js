@@ -1,4 +1,5 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = {
   entry: path.resolve(__dirname, './src/index.js'),
@@ -11,11 +12,16 @@ const config = {
     contentBase: path.resolve(__dirname, 'dist'),
     compress: true,
     port: 8080,
+    proxy: {
+      '/api': 'http://localhost:3000',
+      secure: false,
+    },
+    publicPath: '/feed',
   },
   module: {
     rules: [
       {
-        test: /\.jsx?/,
+        test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
@@ -23,6 +29,14 @@ const config = {
             presets: ['@babel/preset-env', '@babel/preset-react'],
           },
         },
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },
