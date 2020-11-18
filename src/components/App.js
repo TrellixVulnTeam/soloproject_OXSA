@@ -34,6 +34,9 @@ class App extends Component {
     // remember to bind functions here
   }
 
+  // componentDidMount(){
+  //   fetch('/api/')
+  // }
   // componentDidMount() {
   //   fetch(
   //     'http://www.opensecrets.org/api/?method=orgSummary&id=D000000125&apikey=ec28c1becea1b97abf538afe264e40d1&output=json'

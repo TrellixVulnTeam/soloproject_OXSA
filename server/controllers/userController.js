@@ -1,4 +1,6 @@
 const User = require('../models/userModel');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userController = {};
 
@@ -15,15 +17,20 @@ userController.getAllUsers = (req, res, next) => {
 };
 
 userController.createUser = (req, res, next) => {
+  console.log('req body includes', req.body);
   const newUser = {
     username: req.body.username,
     password: req.body.password,
   };
 
   User.create(newUser, (err, user) => {
+    console.log('user is', user);
     if (err) {
       // send back to login page
-      return next(err);
+      return next({
+        log: 'Error in userController.createUser User.create',
+        message: { Error: 'Error in User.create' },
+      });
     }
 
     const userID = user.id;
@@ -33,6 +40,7 @@ userController.createUser = (req, res, next) => {
 };
 
 userController.verifyUser = (req, res, next) => {
+  console.log('verifying user');
   const plainTextPass = req.body.password;
 
   User.findOne({ username: req.body.username }, (err, user) => {
@@ -41,13 +49,25 @@ userController.verifyUser = (req, res, next) => {
       return next(err);
     }
 
-    if (user['_doc']['password'] === req.body.password) {
-      const userID = user.id;
-      res.locals.userID = userID;
+    if (user === null) return res.redirect('/login');
 
-      return next();
-    } else {
-      return next();
-    }
+    bcrypt.compare(plainTextPass, user['_doc']['password'], (err, result) => {
+      if (err) {
+        return res.redirect('/login');
+      }
+
+      if (result) {
+        const userID = user.id;
+        const followed = user.followed;
+        res.locals.userID = userID;
+        res.locals.followed = followed;
+        // console.log('leaving verify, res.locals includes', res.locals);
+        return next();
+      } else {
+        return res.redirect('/login');
+      }
+    });
   });
 };
+
+module.exports = userController;

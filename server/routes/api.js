@@ -4,7 +4,9 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+// if they send a get request to api, look in response body for id
+router.get('/followed', (req, res) => {
+  const id = req.cookies.centssid;
   return res
     .status(200)
     .sendFile(path.resolve(__dirname, '../../dist/login.html'));
